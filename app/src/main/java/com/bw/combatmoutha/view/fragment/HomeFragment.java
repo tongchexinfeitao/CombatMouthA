@@ -3,6 +3,9 @@ package com.bw.combatmoutha.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import com.bw.combatmoutha.base.BaseFragment;
 import com.bw.combatmoutha.contract.IHomeContract;
 import com.bw.combatmoutha.model.bean.Bean;
 import com.bw.combatmoutha.presenter.HomePresenter;
+import com.bw.combatmoutha.view.adapter.MyAdapter;
 import com.bw.combatmoutha.view.widget.FlowLayout;
 
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.List;
 public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeContract.IView {
 
     private FlowLayout flowLayout;
+    private RecyclerView recyclerView;
 
     @Override
     protected void initData() {
@@ -33,6 +38,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
 
     @Override
     protected void initView(View inflate) {
+        recyclerView = inflate.findViewById(R.id.recycler);
+
         flowLayout = inflate.findViewById(R.id.flow);
         flowLayout.setOnTagClickListener(new FlowLayout.onTagClickListener() {
             @Override
@@ -55,13 +62,23 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
 
     @Override
     public void onHomeSuccess(Bean bean) {
-        flowLayout.removeAllViews();
-
-        Toast.makeText(getActivity(), "成功" + bean.getMessage(), Toast.LENGTH_SHORT).show();
         List<Bean.ResultBean> result = bean.getResult();
-        for (int i = 0; i < result.size(); i++) {
-            flowLayout.addTag(result.get(i).getPrice()+"");
-        }
+
+        //设置布局管理器
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+        //设置适配器
+        recyclerView.setAdapter(new MyAdapter(result));
+
+
+//        flowLayout.removeAllViews();
+//
+//        Toast.makeText(getActivity(), "成功" + bean.getMessage(), Toast.LENGTH_SHORT).show();
+//        List<Bean.ResultBean> result = bean.getResult();
+//        for (int i = 0; i < result.size(); i++) {
+//            flowLayout.addTag(result.get(i).getPrice()+"");
+//        }
     }
 
     @Override

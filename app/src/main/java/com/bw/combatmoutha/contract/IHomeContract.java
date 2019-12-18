@@ -4,9 +4,13 @@ import com.bw.combatmoutha.model.bean.Bean;
 
 public interface IHomeContract {
     interface IView {
+
+        //商品列表成功
         void onHomeSuccess(Bean bean);
 
         void onHomeFailure(Throwable throwable);
+
+
     }
 
     interface IPresenter {

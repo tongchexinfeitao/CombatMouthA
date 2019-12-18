@@ -32,4 +32,7 @@ dependencies {
 
     //Gson
     implementation 'com.google.code.gson:gson:2.4'
+
+//    RecyclerView依赖
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 }
