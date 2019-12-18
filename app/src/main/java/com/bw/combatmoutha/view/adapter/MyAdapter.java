@@ -30,13 +30,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //加载布局
-        View inflate = View.inflate(viewGroup.getContext(), R.layout.item, viewGroup);
+        View inflate = View.inflate(viewGroup.getContext(), R.layout.item, null);
         //直接返回  MyViewHolder
         return new MyViewHolder(inflate);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
         //获取数据
         Bean.ResultBean resultBean = list.get(i);
 
@@ -47,9 +47,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         myViewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
 
-        ViewGroup.LayoutParams layoutParams = myViewHolder.itemView.getLayoutParams();
-        layoutParams.height = new Random().nextInt(400) + 200;
-        myViewHolder.imageView.setLayoutParams(layoutParams);
+        //itemView就是我们的条目布局
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(i);
+                }
+            }
+        });
+
 
     }
 
@@ -71,4 +78,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             price = itemView.findViewById(R.id.tv_price);
         }
     }
+
+
+    onItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(MyAdapter.onItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface onItemClickListener {
+        void onItemClick(int position);
+    }
+
+
 }

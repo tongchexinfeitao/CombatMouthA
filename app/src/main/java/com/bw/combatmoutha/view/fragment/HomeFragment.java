@@ -1,22 +1,21 @@
 package com.bw.combatmoutha.view.fragment;
 
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bw.combatmoutha.R;
 import com.bw.combatmoutha.base.BaseFragment;
 import com.bw.combatmoutha.contract.IHomeContract;
 import com.bw.combatmoutha.model.bean.Bean;
+import com.bw.combatmoutha.model.bean.FBean;
 import com.bw.combatmoutha.presenter.HomePresenter;
+import com.bw.combatmoutha.view.activity.SecondActivity;
 import com.bw.combatmoutha.view.adapter.MyAdapter;
 import com.bw.combatmoutha.view.widget.FlowLayout;
 
@@ -32,7 +31,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
 
     @Override
     protected void initData() {
-        // TODO: 2019/12/17 一行代码去联网
+
+        //流式布局的数据
+        mPresenter.getFlowData();
+        //商品数据
         mPresenter.getHomeData("板鞋");
     }
 
@@ -61,30 +63,46 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
     }
 
     @Override
+    public void onFlowSuccess(FBean flowBean) {
+        flowLayout.removeAllViews();
+        List<String> tags = flowBean.getTags();
+
+        for (int i = 0; i < tags.size(); i++) {
+            flowLayout.addTag(tags.get(i));
+        }
+    }
+
+    @Override
+    public void onFlowFailure(Throwable throwable) {
+        Toast.makeText(getActivity(), "请求流式布局失败", Toast.LENGTH_SHORT).show();
+        Log.e("TAG", "请求流式布局失败 :" + throwable.getMessage());
+    }
+
+    @Override
     public void onHomeSuccess(Bean bean) {
         List<Bean.ResultBean> result = bean.getResult();
 
         //设置布局管理器
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         //设置适配器
-        recyclerView.setAdapter(new MyAdapter(result));
+        MyAdapter myAdapter = new MyAdapter(result);
+        myAdapter.setOnItemClickListener(new MyAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startActivity(new Intent(getActivity(), SecondActivity.class));
+            }
+        });
+        recyclerView.setAdapter(myAdapter);
 
 
-//        flowLayout.removeAllViews();
-//
-//        Toast.makeText(getActivity(), "成功" + bean.getMessage(), Toast.LENGTH_SHORT).show();
-//        List<Bean.ResultBean> result = bean.getResult();
-//        for (int i = 0; i < result.size(); i++) {
-//            flowLayout.addTag(result.get(i).getPrice()+"");
-//        }
     }
 
     @Override
     public void onHomeFailure(Throwable throwable) {
-        Toast.makeText(getActivity(), "失败" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-        Log.e("TAG", "失败" + throwable.getMessage());
+        Toast.makeText(getActivity(), "请求商品失败" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.e("TAG", "请求商品失败" + throwable.getMessage());
 
     }
 }
