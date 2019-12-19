@@ -3,6 +3,8 @@ package com.bw.combatmoutha.view.activity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -19,31 +21,35 @@ public class SecondActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        webView.loadUrl("file:///android_asset/hello.html");
+        //加载网页
+        webView.loadUrl("file:///android_asset/Baibai.html");
     }
 
     @Override
     protected void initView() {
         webView = findViewById(R.id.web);
-        //解决应用内加载
-        webView.setWebViewClient(new WebViewClient());
         //支持android调用js
         webView.getSettings().setJavaScriptEnabled(true);
 
-        //支持js调用andorid
+        // TODO: 2019/12/19 要检查一下方法是否加了注解
+        //支持js调用android
         webView.addJavascriptInterface(new JsToAndroid(), "android");
+
+        //网页应用内加载
+        webView.setWebViewClient(new WebViewClient());
+        //允许js弹窗
+        webView.setWebChromeClient(new WebChromeClient());
 
 
         button = findViewById(R.id.btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //1、android调用js的方法   tomsg()
-//                webView.loadUrl("javascript:tomsg()");
+                //调用无参的js方法
+//                webView.loadUrl("javascript:jsFunction1()");
 
-                //2、android调用你js的方法   age(字符串)
-                // TODO: 2019/12/18  注意要传递的参数是带着 单引号
-                webView.loadUrl("javascript:age('我是android世界来的参数')");
+                //调用有参的js方法
+                webView.loadUrl("javascript:jsFunction2('我是android过来的')");
             }
         });
 
@@ -60,20 +66,23 @@ public class SecondActivity extends BaseActivity {
     }
 
 
-    //这是js调用android的类  他有别名
-    // TODO: 2019/12/18  方法上面必须有注解     @JavascriptInterface
+    /**
+     * 1、方法名字必须固定
+     * 2、方法必须加注解
+     */
     public class JsToAndroid {
         @JavascriptInterface
-        public void getJsData() {
-            Log.e("TAG", "js调用了android的 getJsData方法");
-            Toast.makeText(SecondActivity.this, "js调用了android的 getJsData方法", Toast.LENGTH_SHORT).show();
+        public void getAndroidData() {
+            Log.e("TAG", "JsToAndroid getAndroidData");
+            Toast.makeText(SecondActivity.this, "JsToAndroid getAndroidData", Toast.LENGTH_SHORT).show();
 
         }
 
         @JavascriptInterface
-        public void getJsData(String data) {
-            Log.e("TAG", "js调用了android的 getJsData方法" + data);
-            Toast.makeText(SecondActivity.this, "js调用了android的 getJsData方法" + data, Toast.LENGTH_SHORT).show();
+        public void getAndroidXxxData(String data) {
+            Log.e("TAG", "JsToAndroid getAndroidXxxData " + data);
+            Toast.makeText(SecondActivity.this, "JsToAndroid getAndroidXxxData" + data, Toast.LENGTH_SHORT).show();
         }
+
     }
 }

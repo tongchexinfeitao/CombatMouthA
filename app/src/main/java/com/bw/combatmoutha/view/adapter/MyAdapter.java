@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.bw.combatmoutha.R;
 import com.bw.combatmoutha.model.bean.Bean;
 
@@ -45,8 +49,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // TODO: 2019/12/18 price 价格必须加上引号
         myViewHolder.price.setText("" + resultBean.getPrice());
 
-        myViewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
-
         //itemView就是我们的条目布局
         myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +59,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             }
         });
 
-
+        Glide.with(myViewHolder.imageView)
+                .load(resultBean.getMasterPic())
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher_round)
+//                .apply(RequestOptions.bitmapTransform(new RoundedCorners(25)))
+                //圆形图
+                .apply(RequestOptions.bitmapTransform(new CircleCrop()))
+                .into(myViewHolder.imageView);
     }
 
     @Override

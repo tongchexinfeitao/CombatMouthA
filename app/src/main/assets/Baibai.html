@@ -3,12 +3,13 @@
     <meta charset="utf-8">
 
     <script type="text/javascript">
-        function tomsg(){
+        function jsFunction1(){
         document.getElementById("name").innerHTML =
                  "<br\>java调用了js方法tomsg方法";
         }
-        function age(hello){
+        function jsFunction2(hello){
         document.getElementById("name").innerHTML =hello;
+        alert("我是弹窗");
         }
     </script>
 
@@ -18,7 +19,7 @@
 <p>我是一个段落</p>
 <p id="name">name</p>
 
-<button onclick="window.android.getJsData()" >无参调用android方法</button>
-<button onclick="window.android.getJsData('hello我是js调用andorid的方法传递的参数')" >有参：从js传递给android</button>
+<button onclick="window.android.getAndroidData()" >无参调用android方法</button>
+<button onclick="window.android.getAndroidXxxData('hello我是js调用andorid的方法传递的参数')" >有参：从js传递给android</button>
 </body>
 </html>

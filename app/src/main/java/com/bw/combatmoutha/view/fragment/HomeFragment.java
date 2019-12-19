@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bw.combatmoutha.R;
@@ -15,6 +17,7 @@ import com.bw.combatmoutha.contract.IHomeContract;
 import com.bw.combatmoutha.model.bean.Bean;
 import com.bw.combatmoutha.model.bean.FBean;
 import com.bw.combatmoutha.presenter.HomePresenter;
+import com.bw.combatmoutha.utils.NetUtil;
 import com.bw.combatmoutha.view.activity.SecondActivity;
 import com.bw.combatmoutha.view.adapter.MyAdapter;
 import com.bw.combatmoutha.view.widget.FlowLayout;
@@ -28,6 +31,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
 
     private FlowLayout flowLayout;
     private RecyclerView recyclerView;
+    private EditText editText;
+    private Button button;
 
     @Override
     protected void initData() {
@@ -40,13 +45,28 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
 
     @Override
     protected void initView(View inflate) {
+        editText = inflate.findViewById(R.id.tv_content);
+        button = inflate.findViewById(R.id.btn_go_search);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String s = editText.getText().toString();
+                // TODO: 2019/12/19 去搜索商品
+                mPresenter.getHomeData(s);
+
+                // TODO: 2019/12/19 把记录添加到流式布局中
+                flowLayout.addTag(s);
+            }
+        });
         recyclerView = inflate.findViewById(R.id.recycler);
 
         flowLayout = inflate.findViewById(R.id.flow);
         flowLayout.setOnTagClickListener(new FlowLayout.onTagClickListener() {
             @Override
             public void onTagClick(String tag) {
-                Toast.makeText(getActivity(), tag, Toast.LENGTH_SHORT).show();
+                //这是非考试的处理,考试直接传tag
+                tag = "手机";
+                mPresenter.getHomeData(tag);
             }
         });
     }
