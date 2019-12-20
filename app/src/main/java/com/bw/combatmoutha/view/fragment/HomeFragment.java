@@ -64,8 +64,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements IHomeCo
         flowLayout.setOnTagClickListener(new FlowLayout.onTagClickListener() {
             @Override
             public void onTagClick(String tag) {
-                //这是非考试的处理,考试直接传tag
-                tag = "手机";
+                // TODO: 2019/12/19 去搜索商品
                 mPresenter.getHomeData(tag);
             }
         });

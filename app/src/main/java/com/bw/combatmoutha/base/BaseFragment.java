@@ -20,6 +20,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment {
             mPresenter.attach(this);
         }
         initView(inflate);
+
         return inflate;
     }
 

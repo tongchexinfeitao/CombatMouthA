@@ -19,6 +19,9 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
+    /**
+     * 权限、App有注册、队列、注解、异常捕获配置
+     */
     private RadioGroup radioGroup;
     private ViewPager viewPager;
     List<Fragment> fragmentList = new ArrayList<>();

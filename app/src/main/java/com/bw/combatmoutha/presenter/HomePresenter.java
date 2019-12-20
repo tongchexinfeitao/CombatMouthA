@@ -47,7 +47,7 @@ public class HomePresenter extends BasePresenter<IHomeContract.IView> implements
         homeModel.getHomeData(keyword, new IHomeContract.IModel.IModelCallback() {
             @Override
             public void onFlowSuccess(FBean flowBean) {
-                view.onFlowSuccess(flowBean);
+               view.onFlowSuccess(flowBean);
             }
 
             @Override
@@ -57,7 +57,7 @@ public class HomePresenter extends BasePresenter<IHomeContract.IView> implements
 
             @Override
             public void onHomeSuccess(Bean bean) {
-                view.onHomeSuccess(bean);
+               view.onHomeSuccess(bean);
             }
 
             @Override

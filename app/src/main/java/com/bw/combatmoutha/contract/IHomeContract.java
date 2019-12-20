@@ -19,18 +19,18 @@ public interface IHomeContract {
     }
 
     interface IPresenter {
-        //流式布局
+        //历史记录接口
         void getFlowData();
 
-        //商品
+        //商品搜索接口
         void getHomeData(String keyword);
     }
 
     interface IModel {
-        //获取流式布局数据
+        //历史记录接口
         void getFlowData(IModelCallback iModelCallback);
 
-        //获取商品列表数据
+        //商品搜索接口
         void getHomeData(String keyword, IModelCallback iModelCallback);
 
         interface IModelCallback {
@@ -43,6 +43,9 @@ public interface IHomeContract {
             void onHomeSuccess(Bean bean);
 
             void onHomeFailure(Throwable throwable);
+
+
         }
+
     }
 }

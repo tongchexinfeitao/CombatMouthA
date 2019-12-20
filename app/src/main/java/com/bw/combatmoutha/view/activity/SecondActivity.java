@@ -45,9 +45,6 @@ public class SecondActivity extends BaseActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //调用无参的js方法
-//                webView.loadUrl("javascript:jsFunction1()");
-
                 //调用有参的js方法
                 webView.loadUrl("javascript:jsFunction2('我是android过来的')");
             }
@@ -71,13 +68,6 @@ public class SecondActivity extends BaseActivity {
      * 2、方法必须加注解
      */
     public class JsToAndroid {
-        @JavascriptInterface
-        public void getAndroidData() {
-            Log.e("TAG", "JsToAndroid getAndroidData");
-            Toast.makeText(SecondActivity.this, "JsToAndroid getAndroidData", Toast.LENGTH_SHORT).show();
-
-        }
-
         @JavascriptInterface
         public void getAndroidXxxData(String data) {
             Log.e("TAG", "JsToAndroid getAndroidXxxData " + data);
